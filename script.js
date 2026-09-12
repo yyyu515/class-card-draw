@@ -1,121 +1,155 @@
-// weight 為抽中權重；總和為 100，可直接把數字當百分比理解。
 const cards = [
-  {name:'DJ卡', image:'images/1.png', weight:14},
-  {name:'午休自由卡', image:'images/2.png', weight:9},
-  {name:'快速通關卡', image:'images/3.png', weight:15},
-  {name:'無敵卡', image:'images/4.png', weight:2},
-  {name:'籤王卡', image:'images/5.png', weight:4},
-  {name:'免掃地卡', image:'images/6.png', weight:10},
-  {name:'能量補充卡', image:'images/7.png', weight:20},
-  {name:'北風太陽卡', image:'images/8.png', weight:12},
-  {name:'平板卡', image:'images/9.png', weight:8},
-  {name:'任性卡', image:'images/10.png', weight:6}
+  { name: "任性卡", image: "images/10.png", weight: 6 },
+  { name: "平板卡", image: "images/9.png", weight: 8 },
+  { name: "北風太陽卡", image: "images/8.png", weight: 12 },
+  { name: "能量補充卡", image: "images/7.png", weight: 20 },
+  { name: "免掃地卡", image: "images/6.png", weight: 10 },
+  { name: "籤王卡", image: "images/5.png", weight: 4 },
+  { name: "無敵卡", image: "images/4.png", weight: 2 },
+  { name: "快速通關卡", image: "images/3.png", weight: 15 },
+  { name: "午休自由卡", image: "images/2.png", weight: 9 },
+  { name: "DJ卡", image: "images/1.png", weight: 14 }
 ];
 
-function weightedDraw(){
-  const total=cards.reduce((s,c)=>s+c.weight,0);
-  let r=Math.random()*total;
-  for(const c of cards){
-    r-=c.weight;
-    if(r<0)return c;
+const cardImage = document.getElementById("cardImage");
+const resultText = document.getElementById("resultText");
+const drawButton = document.getElementById("drawButton");
+
+let currentIndex = 0;
+let winningCard = null;
+let rollingTimer = null;
+
+let isRolling = false;
+let isStopping = false;
+
+
+// 加權抽卡
+function getWeightedRandomCard() {
+  const total = cards.reduce((sum, card) => sum + card.weight, 0);
+
+  let random = Math.random() * total;
+
+  for (const card of cards) {
+    random -= card.weight;
+
+    if (random < 0) {
+      return card;
+    }
   }
-  return cards.at(-1);
+
+  return cards[cards.length - 1];
 }
 
-const img=document.querySelector('#card');
-const result=document.querySelector('#result');
-const placeholder=document.querySelector('#placeholder');
-const rollingBadge=document.querySelector('#rollingBadge');
-const draw=document.querySelector('#draw');
-const stop=document.querySelector('#stop');
 
-let rollingTimer=null;
-let currentIndex=Math.floor(Math.random()*cards.length);
-let finalCard=null;
-let isStopping=false;
+// 顯示下一張
+function nextCard() {
+  currentIndex = (currentIndex + 1) % cards.length;
 
-function showCard(index, animationClass='rolling'){
-  placeholder.style.display='none';
-  img.style.display='block';
-  img.classList.remove('show','rolling');
-  img.src=cards[index].image;
-  img.alt=cards[index].name;
-  void img.offsetWidth;
-  if(animationClass) img.classList.add(animationClass);
+  cardImage.src = cards[currentIndex].image;
+  cardImage.style.display = "block";
 }
 
-function startRoulette(){
-  if(rollingTimer || isStopping) return;
 
-  // 結果在按「開始抽卡」時就依權重決定。
-  // 停止鍵只決定何時揭曉，不會改變抽中機率。
-  finalCard=weightedDraw();
-  result.textContent='抽卡中… 想停就按停止！';
-  rollingBadge.hidden=false;
-  draw.disabled=true;
-  stop.disabled=false;
+// 開始抽卡
+function startDraw() {
 
-  showCard(currentIndex);
-  rollingTimer=setInterval(()=>{
-    currentIndex=(currentIndex+1)%cards.length;
-    showCard(currentIndex);
-  },85);
+  if (isRolling || isStopping) return;
+
+  // 一開始就先決定最後抽到哪張
+  winningCard = getWeightedRandomCard();
+
+  isRolling = true;
+
+  resultText.textContent = "抽卡中……想停就按停止！";
+
+  drawButton.textContent = "停止！";
+  drawButton.disabled = false;
+
+  // 馬上先顯示第一張卡
+  nextCard();
+
+  // 快速輪播
+  rollingTimer = setInterval(() => {
+    nextCard();
+  }, 90);
 }
 
-async function stopRoulette(){
-  if(!rollingTimer || isStopping) return;
 
-  isStopping=true;
+// 停止
+function stopDraw() {
+
+  if (!isRolling || isStopping) return;
+
+  isRolling = false;
+  isStopping = true;
+
   clearInterval(rollingTimer);
-  rollingTimer=null;
-  stop.disabled=true;
-  result.textContent='慢慢停下來…';
-  rollingBadge.textContent='即將揭曉…';
 
-  const targetIndex=cards.indexOf(finalCard);
-  const distance=(targetIndex-currentIndex+cards.length)%cards.length;
+  drawButton.disabled = true;
+  drawButton.textContent = "即將揭曉…";
 
-  // 至少再完整輪一圈，然後自然走到真正抽中的那張卡。
-  const steps=cards.length + distance;
+  resultText.textContent = "慢慢停下來囉……";
 
-  for(let step=1; step<=steps; step++){
-    const progress=step/steps;
-    // 越接近最後越慢：大約從 110ms 拉長到 700ms。
-    const delay=Math.round(110 + 590*Math.pow(progress,2.25));
-    currentIndex=(currentIndex+1)%cards.length;
-    showCard(currentIndex);
-    await new Promise(resolve=>setTimeout(resolve,delay));
+  const winningIndex = cards.findIndex(
+    card => card.name === winningCard.name
+  );
+
+  // 至少再跑一整圈
+  let steps =
+    cards.length +
+    ((winningIndex - currentIndex + cards.length) % cards.length);
+
+  if (steps < cards.length + 3) {
+    steps += cards.length;
   }
 
-  // 理論上此時 currentIndex 就是 targetIndex；再明確鎖定一次結果。
-  currentIndex=targetIndex;
-  img.classList.remove('rolling');
-  img.src=finalCard.image;
-  img.alt=finalCard.name;
-  void img.offsetWidth;
-  img.classList.add('show');
+  let step = 0;
 
-  rollingBadge.hidden=true;
-  rollingBadge.textContent='抽卡中…';
-  result.textContent=`恭喜抽到：${finalCard.name}！`;
-  draw.textContent='再抽一次';
-  draw.disabled=false;
-  isStopping=false;
+
+  function slowDown() {
+
+    step++;
+
+    nextCard();
+
+    if (step >= steps) {
+
+      currentIndex = winningIndex;
+
+      cardImage.src = winningCard.image;
+
+      resultText.textContent =
+        `🎉 恭喜抽到：${winningCard.name}！`;
+
+      drawButton.textContent = "再抽一次";
+      drawButton.disabled = false;
+
+      isStopping = false;
+
+      return;
+    }
+
+
+    // 前面快，最後越來越慢
+    const progress = step / steps;
+
+    const delay =
+      100 + Math.pow(progress, 3) * 650;
+
+    setTimeout(slowDown, delay);
+  }
+
+  slowDown();
 }
 
-draw.addEventListener('click',startRoulette);
-stop.addEventListener('click',stopRoulette);
 
-const gallery=document.querySelector('#gallery');
-cards.forEach(c=>{
-  const i=new Image();
-  i.src=c.image;
-  i.alt=c.name;
-  i.loading='lazy';
-  gallery.appendChild(i);
-});
+// 同一顆按鈕控制「開始」和「停止」
+drawButton.addEventListener("click", () => {
 
-document.querySelector('#galleryBtn').addEventListener('click',e=>{
-  gallery.hidden=!gallery.hidden;
-  e.currentTarget.textContent=gallery.hidden?'查看全部卡牌':'收起卡牌圖鑑';
+  if (isRolling) {
+    stopDraw();
+  } else if (!isStopping) {
+    startDraw();
+  }
+
 });
