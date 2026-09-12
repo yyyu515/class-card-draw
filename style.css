@@ -152,3 +152,56 @@ button:disabled{opacity:.45;cursor:not-allowed}
     text-align:left;
   }
 }
+
+
+/* ===== 大螢幕：右側結果區往上移 ===== */
+@media (min-width: 601px) {
+  .controls {
+    transform: translateY(-55px);
+  }
+
+  #result {
+    white-space: nowrap;
+  }
+}
+
+/* ===== 彩帶動畫 ===== */
+#confettiLayer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 9999;
+}
+
+.confetti-piece {
+  position: absolute;
+  width: 12px;
+  height: 28px;
+  left: var(--start-x);
+  top: var(--start-y);
+  background: var(--color);
+  border-radius: 3px;
+  opacity: 0;
+  animation: confettiFly var(--duration) cubic-bezier(.15,.65,.25,1) forwards;
+}
+
+@keyframes confettiFly {
+  0% {
+    transform: translate(0,0) rotate(0deg) scale(.6);
+    opacity: 0;
+  }
+  8% { opacity: 1; }
+  60% { opacity: 1; }
+  100% {
+    transform: translate(var(--move-x), var(--move-y)) rotate(var(--rotate)) scale(1);
+    opacity: 0;
+  }
+}
+
+/* 手機不要播放彩帶 */
+@media (max-width: 600px) {
+  #confettiLayer { display: none; }
+  .controls { transform: none; }
+  #result { white-space: normal; }
+}

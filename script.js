@@ -12,6 +12,52 @@ const cards = [
   {name:'任性卡', image:'images/10.png', weight:6}
 ];
 
+
+function launchConfetti(){
+  if(window.innerWidth<=600 || !confettiLayer) return;
+
+  confettiLayer.innerHTML='';
+
+  const colors=[
+    '#E76F51',
+    '#F4A261',
+    '#E9C46A',
+    '#5F9E8B',
+    '#8E87B2',
+    '#D77A91',
+    '#6FA3C8'
+  ];
+
+  const amount=70;
+
+  for(let i=0;i<amount;i++){
+    const piece=document.createElement('div');
+    piece.className='confetti-piece';
+
+    const fromLeft=i%2===0;
+    const startX=fromLeft ? Math.random()*8 : 92+Math.random()*8;
+    const startY=28+Math.random()*46;
+    const moveX=fromLeft ? 180+Math.random()*450 : -(180+Math.random()*450);
+    const moveY=-180+Math.random()*500;
+    const rotate=-720+Math.random()*1440;
+    const duration=1.6+Math.random()*1.2;
+
+    piece.style.setProperty('--start-x',`${startX}vw`);
+    piece.style.setProperty('--start-y',`${startY}vh`);
+    piece.style.setProperty('--move-x',`${moveX}px`);
+    piece.style.setProperty('--move-y',`${moveY}px`);
+    piece.style.setProperty('--rotate',`${rotate}deg`);
+    piece.style.setProperty('--duration',`${duration}s`);
+    piece.style.setProperty('--color',colors[Math.floor(Math.random()*colors.length)]);
+
+    confettiLayer.appendChild(piece);
+  }
+
+  setTimeout(()=>{
+    confettiLayer.innerHTML='';
+  },3000);
+}
+
 function weightedDraw(){
   const total=cards.reduce((s,c)=>s+c.weight,0);
   let r=Math.random()*total;
@@ -28,6 +74,7 @@ const placeholder=document.querySelector('#placeholder');
 const rollingBadge=document.querySelector('#rollingBadge');
 const draw=document.querySelector('#draw');
 const stop=document.querySelector('#stop');
+const confettiLayer=document.querySelector('#confettiLayer');
 const claimNotice=document.querySelector('#claimNotice');
 
 let rollingTimer=null;
@@ -100,6 +147,7 @@ async function stopRoulette(){
   rollingBadge.hidden=true;
   rollingBadge.textContent='抽卡中…';
   result.textContent=`🎉 恭喜抽到：${finalCard.name}！`;
+  launchConfetti();
   claimNotice.hidden=false;
   draw.textContent='再抽一次';
   draw.disabled=false;
