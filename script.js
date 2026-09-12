@@ -97,7 +97,7 @@ async function stopRoulette(){
 
   rollingBadge.hidden=true;
   rollingBadge.textContent='抽卡中…';
-  result.textContent=`恭喜抽到：${finalCard.name}！`;
+  result.textContent=`恭喜抽到：${finalCard.name}！請跟老師領取卡牌並妥善保管遺失恕不補發`;
   draw.textContent='再抽一次';
   draw.disabled=false;
   isStopping=false;
