@@ -9,7 +9,7 @@
 <body>
   <main>
     <h1>班級獎勵抽卡</h1>
-    <p class="hint">按下按鈕，看看今天抽到哪一張！</p>
+    <p class="hint">按下開始抽卡，想停的時候再按「停止！」</p>
 
     <div class="stage" aria-live="polite">
       <div id="placeholder">🎁</div>
@@ -20,7 +20,8 @@
     <div class="controls">
       <h2 id="result">準備好了嗎？</h2>
       <div class="buttons">
-        <button id="draw">抽一張卡</button>
+        <button id="draw">開始抽卡</button>
+        <button id="stop" class="stop" disabled>停止！</button>
         <button id="galleryBtn" class="secondary">查看全部卡牌</button>
       </div>
     </div>

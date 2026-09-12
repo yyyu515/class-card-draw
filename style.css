@@ -52,3 +52,5 @@ button:active:not(:disabled){transform:scale(.98)}
   .stage{width:min(100%,92vw);padding:10px;margin-top:10px}
   .buttons button{width:min(88%,320px)}
 }
+button.stop{background:#c96f5d}
+button.stop:disabled{opacity:.38}
