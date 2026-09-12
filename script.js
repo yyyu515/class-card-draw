@@ -69,7 +69,8 @@ function weightedDraw(){
 }
 
 const img=document.querySelector('#card');
-const result=document.querySelector('#result');
+const resultLabel=document.querySelector('#resultLabel');
+const resultCardName=document.querySelector('#resultCardName');
 const placeholder=document.querySelector('#placeholder');
 const rollingBadge=document.querySelector('#rollingBadge');
 const draw=document.querySelector('#draw');
@@ -99,7 +100,8 @@ function startRoulette(){
   // 停止鍵只決定何時揭曉，不會改變抽中機率。
   finalCard=weightedDraw();
   claimNotice.hidden=true;
-  result.textContent='抽卡中… 想停就按停止！';
+  resultLabel.textContent='抽卡中…想停就按停止！';
+  resultCardName.textContent='';
   rollingBadge.hidden=false;
   draw.disabled=true;
   stop.disabled=false;
@@ -118,7 +120,8 @@ async function stopRoulette(){
   clearInterval(rollingTimer);
   rollingTimer=null;
   stop.disabled=true;
-  result.textContent='慢慢停下來…';
+  resultLabel.textContent='慢慢停下來…';
+  resultCardName.textContent='';
   rollingBadge.textContent='即將揭曉…';
 
   const targetIndex=cards.indexOf(finalCard);
@@ -146,7 +149,8 @@ async function stopRoulette(){
 
   rollingBadge.hidden=true;
   rollingBadge.textContent='抽卡中…';
-  result.textContent=`🎉 恭喜抽到：${finalCard.name}！`;
+  resultLabel.textContent='🎉 恭喜抽到：';
+  resultCardName.textContent=`${finalCard.name}！`;
   launchConfetti();
   claimNotice.hidden=false;
   draw.textContent='再抽一次';

@@ -224,3 +224,59 @@ button:disabled{opacity:.45;cursor:not-allowed}
   white-space: nowrap;
   box-shadow: 0 6px 18px rgba(0,0,0,.16);
 }
+
+
+/* ===== 最終版：右側狀態與結果 ===== */
+.result-box{
+  margin:0 0 34px;
+  line-height:1.25;
+}
+
+#resultLabel{
+  font-size:clamp(25px,2.5vw,38px);
+  font-weight:800;
+  white-space:nowrap;
+}
+
+#resultCardName{
+  margin-top:10px;
+  font-size:clamp(34px,3.4vw,54px);
+  font-weight:900;
+  line-height:1.15;
+}
+
+/* 電腦／教室大屏：提示往上、按鈕區與提示拉開 */
+@media (min-width:601px){
+  .controls{
+    transform:translateY(-75px);
+  }
+
+  .buttons{
+    margin-top:34px;
+  }
+}
+
+/* 抽卡中標籤固定正中央 */
+#rollingBadge{
+  position:absolute !important;
+  top:50% !important;
+  left:50% !important;
+  right:auto !important;
+  transform:translate(-50%,-50%) !important;
+  background:rgba(47,41,35,.84);
+  color:#fff;
+  padding:14px 24px;
+  border-radius:999px;
+  font-weight:800;
+  font-size:clamp(18px,2vw,28px);
+  z-index:6;
+  white-space:nowrap;
+  box-shadow:0 6px 18px rgba(0,0,0,.18);
+}
+
+/* 手機維持上下版 */
+@media (max-width:600px){
+  .controls{transform:none}
+  .buttons{margin-top:16px}
+  #resultLabel{white-space:normal}
+}
