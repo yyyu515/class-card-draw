@@ -1,4 +1,4 @@
-// weight 為抽中權重；目前總和為 100，可直接把數字當百分比理解。
+// weight 為抽中權重；總和為 100，可直接把數字當百分比理解。
 const cards = [
   {name:'DJ卡', image:'images/1.png', weight:14},
   {name:'午休自由卡', image:'images/2.png', weight:9},
@@ -27,52 +27,84 @@ const result=document.querySelector('#result');
 const placeholder=document.querySelector('#placeholder');
 const rollingBadge=document.querySelector('#rollingBadge');
 const draw=document.querySelector('#draw');
+const stop=document.querySelector('#stop');
 
-// 約 5 秒：前段十張卡快速輪播，最後 1～2 秒逐漸減速，再停在真正抽中的卡。
-async function playRoulette(finalCard){
+let rollingTimer=null;
+let currentIndex=Math.floor(Math.random()*cards.length);
+let finalCard=null;
+let isStopping=false;
+
+function showCard(index, animationClass='rolling'){
   placeholder.style.display='none';
   img.style.display='block';
+  img.classList.remove('show','rolling');
+  img.src=cards[index].image;
+  img.alt=cards[index].name;
+  void img.offsetWidth;
+  if(animationClass) img.classList.add(animationClass);
+}
+
+function startRoulette(){
+  if(rollingTimer || isStopping) return;
+
+  // 結果在按「開始抽卡」時就依權重決定。
+  // 停止鍵只決定何時揭曉，不會改變抽中機率。
+  finalCard=weightedDraw();
+  result.textContent='抽卡中… 想停就按停止！';
   rollingBadge.hidden=false;
+  draw.disabled=true;
+  stop.disabled=false;
 
-  const delays=[75,75,80,80,85,85,90,90,95,100,105,110,120,130,145,160,180,210,245,285,330,390,460,560,680];
-  let index=Math.floor(Math.random()*cards.length);
+  showCard(currentIndex);
+  rollingTimer=setInterval(()=>{
+    currentIndex=(currentIndex+1)%cards.length;
+    showCard(currentIndex);
+  },85);
+}
 
-  for(let step=0; step<delays.length; step++){
-    const delay=delays[step];
-    const isLast=step===delays.length-1;
-    img.classList.remove('show','rolling');
+async function stopRoulette(){
+  if(!rollingTimer || isStopping) return;
 
-    // 最後一次輪播直接顯示真正抽中的卡，讓動畫自然停在結果上，
-    // 而不是輪播結束後才突然換成結果卡。
-    if(isLast){
-      img.src=finalCard.image;
-      img.alt=finalCard.name;
-    }else{
-      index=(index+1)%cards.length;
-      img.src=cards[index].image;
-      img.alt=cards[index].name;
-    }
+  isStopping=true;
+  clearInterval(rollingTimer);
+  rollingTimer=null;
+  stop.disabled=true;
+  result.textContent='慢慢停下來…';
+  rollingBadge.textContent='即將揭曉…';
 
-    void img.offsetWidth;
-    img.classList.add('rolling');
+  const targetIndex=cards.indexOf(finalCard);
+  const distance=(targetIndex-currentIndex+cards.length)%cards.length;
+
+  // 至少再完整輪一圈，然後自然走到真正抽中的那張卡。
+  const steps=cards.length + distance;
+
+  for(let step=1; step<=steps; step++){
+    const progress=step/steps;
+    // 越接近最後越慢：大約從 110ms 拉長到 700ms。
+    const delay=Math.round(110 + 590*Math.pow(progress,2.25));
+    currentIndex=(currentIndex+1)%cards.length;
+    showCard(currentIndex);
     await new Promise(resolve=>setTimeout(resolve,delay));
   }
 
+  // 理論上此時 currentIndex 就是 targetIndex；再明確鎖定一次結果。
+  currentIndex=targetIndex;
   img.classList.remove('rolling');
+  img.src=finalCard.image;
+  img.alt=finalCard.name;
   void img.offsetWidth;
   img.classList.add('show');
-  rollingBadge.hidden=true;
-}
 
-draw.addEventListener('click',async()=>{
-  draw.disabled=true;
-  result.textContent='抽卡中…';
-  const finalCard=weightedDraw(); // 結果先依權重決定，輪播只是動畫，不影響機率。
-  await playRoulette(finalCard);
+  rollingBadge.hidden=true;
+  rollingBadge.textContent='抽卡中…';
   result.textContent=`恭喜抽到：${finalCard.name}！`;
   draw.textContent='再抽一次';
   draw.disabled=false;
-});
+  isStopping=false;
+}
+
+draw.addEventListener('click',startRoulette);
+stop.addEventListener('click',stopRoulette);
 
 const gallery=document.querySelector('#gallery');
 cards.forEach(c=>{
