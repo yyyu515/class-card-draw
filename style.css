@@ -1,33 +1,154 @@
 *{box-sizing:border-box}
-html,body{margin:0;min-height:100%;font-family:system-ui,-apple-system,"Noto Sans TC","PingFang TC",sans-serif}
-body{background:#f4f0e8;color:#2f2923}
-main{width:min(1180px,96vw);margin:0 auto;padding:18px 0 28px}
-header{text-align:center;margin-bottom:14px}
-h1{font-size:clamp(28px,3vw,44px);margin:0 0 4px}
-.hint{margin:0;color:#6d6258;font-size:clamp(14px,1.5vw,19px)}
-.layout{display:grid;grid-template-columns:minmax(360px,1.05fr) minmax(300px,.95fr);gap:clamp(24px,4vw,60px);align-items:center}
-.stage{position:relative;width:100%;max-width:570px;aspect-ratio:1/1;margin:auto;border-radius:24px;background:#fff;box-shadow:0 12px 35px rgba(0,0,0,.12);overflow:hidden;display:flex;align-items:center;justify-content:center}
-#placeholder{font-size:clamp(70px,10vw,130px)}
-#card{display:none;width:100%;height:100%;object-fit:contain}
-#rollingBadge{position:absolute;top:14px;right:14px;background:rgba(47,41,35,.82);color:#fff;padding:7px 12px;border-radius:999px;font-weight:700}
-.controls{display:flex;flex-direction:column;justify-content:center;min-height:330px}
-#result{font-size:clamp(24px,3vw,42px);line-height:1.35;margin:0 0 18px}
-.claim-notice{font-size:clamp(16px,1.7vw,22px);line-height:1.7;background:#fff8e9;border-radius:16px;padding:14px 16px;margin:0 0 20px;font-weight:650}
-.buttons{display:grid;gap:12px;max-width:430px}
-button{border:0;border-radius:15px;padding:15px 18px;font-size:18px;font-weight:800;cursor:pointer;background:#66584c;color:#fff}
+html,body{
+  margin:0;
+  min-height:100%;
+  font-family:system-ui,-apple-system,"Noto Sans TC","PingFang TC",sans-serif;
+}
+body{
+  background:#f4f0e8;
+  color:#2f2923;
+}
+main{
+  width:min(1400px,98vw);
+  margin:0 auto;
+  padding:12px 18px 22px;
+}
+header{
+  text-align:center;
+  margin-bottom:10px;
+}
+h1{
+  font-size:clamp(28px,2.6vw,42px);
+  margin:0 0 4px;
+}
+.hint{
+  margin:0;
+  color:#6d6258;
+  font-size:clamp(14px,1.35vw,18px);
+}
+
+/* 電腦／教室大屏：固定左右排列 */
+.layout{
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+  justify-content:center;
+  gap:clamp(24px,4vw,64px);
+  width:100%;
+}
+
+.stage{
+  position:relative;
+  flex:0 1 56%;
+  width:min(56vw,640px);
+  max-width:640px;
+  aspect-ratio:1/1;
+  border-radius:24px;
+  background:#fff;
+  box-shadow:0 12px 35px rgba(0,0,0,.12);
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+#placeholder{
+  font-size:clamp(76px,10vw,140px);
+}
+#card{
+  display:none;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+}
+#rollingBadge{
+  position:absolute;
+  top:14px;
+  right:14px;
+  background:rgba(47,41,35,.82);
+  color:#fff;
+  padding:7px 12px;
+  border-radius:999px;
+  font-weight:700;
+}
+
+.controls{
+  flex:0 1 38%;
+  min-width:300px;
+  max-width:480px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  text-align:left;
+}
+#result{
+  font-size:clamp(25px,2.8vw,40px);
+  line-height:1.35;
+  margin:0 0 16px;
+}
+.claim-notice{
+  font-size:clamp(16px,1.5vw,21px);
+  line-height:1.7;
+  background:#fff8e9;
+  border-radius:16px;
+  padding:14px 16px;
+  margin:0 0 18px;
+  font-weight:650;
+}
+.buttons{
+  display:grid;
+  gap:12px;
+  width:100%;
+}
+button{
+  border:0;
+  border-radius:15px;
+  padding:15px 18px;
+  font-size:18px;
+  font-weight:800;
+  cursor:pointer;
+  background:#66584c;
+  color:#fff;
+}
 button.stop{background:#9a4d45}
 button.secondary{background:#ded5c9;color:#3b332d}
 button:disabled{opacity:.45;cursor:not-allowed}
-#gallery{margin-top:28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px}
-#gallery[hidden]{display:none}
-#gallery img{width:100%;border-radius:14px;box-shadow:0 5px 15px rgba(0,0,0,.1)}
 
-@media (max-width:760px){
-  main{width:min(94vw,620px);padding-top:16px}
-  .layout{grid-template-columns:1fr;gap:18px}
-  .stage{max-width:min(92vw,500px)}
-  .controls{min-height:0;text-align:center}
-  .buttons{width:100%;max-width:500px;margin:auto}
-  #result{margin-bottom:12px}
-  .claim-notice{text-align:left}
+#gallery{
+  margin-top:24px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+  gap:16px;
+}
+#gallery[hidden]{display:none}
+#gallery img{
+  width:100%;
+  border-radius:14px;
+  box-shadow:0 5px 15px rgba(0,0,0,.1);
+}
+
+/* 只有真的很窄的手機才改回上下排列 */
+@media (max-width:600px){
+  main{
+    width:min(95vw,620px);
+    padding:14px 0 22px;
+  }
+  .layout{
+    flex-direction:column;
+    gap:16px;
+  }
+  .stage{
+    flex:none;
+    width:min(92vw,500px);
+    max-width:500px;
+  }
+  .controls{
+    flex:none;
+    width:100%;
+    min-width:0;
+    max-width:500px;
+    text-align:center;
+  }
+  .claim-notice{
+    text-align:left;
+  }
 }
