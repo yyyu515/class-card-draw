@@ -1,13 +1,13 @@
 // weight 為抽中權重；總和為 100，可直接把數字當百分比理解。
 const cards = [
   {name:'DJ卡', image:'images/1.png', weight:14},
-  {name:'午休自由卡', image:'images/2.png', weight:12},
+  {name:'午休自由卡', image:'images/2.png', weight:9},
   {name:'快速通關卡', image:'images/3.png', weight:15},
   {name:'無敵卡', image:'images/4.png', weight:2},
   {name:'籤王卡', image:'images/5.png', weight:4},
   {name:'免掃地卡', image:'images/6.png', weight:10},
   {name:'能量補充卡', image:'images/7.png', weight:20},
-  {name:'北風太陽卡', image:'images/8.png', weight:9},
+  {name:'北風太陽卡', image:'images/8.png', weight:12},
   {name:'平板卡', image:'images/9.png', weight:8},
   {name:'任性卡', image:'images/10.png', weight:6}
 ];
@@ -28,6 +28,7 @@ const placeholder=document.querySelector('#placeholder');
 const rollingBadge=document.querySelector('#rollingBadge');
 const draw=document.querySelector('#draw');
 const stop=document.querySelector('#stop');
+const claimNotice=document.querySelector('#claimNotice');
 
 let rollingTimer=null;
 let currentIndex=Math.floor(Math.random()*cards.length);
@@ -50,6 +51,7 @@ function startRoulette(){
   // 結果在按「開始抽卡」時就依權重決定。
   // 停止鍵只決定何時揭曉，不會改變抽中機率。
   finalCard=weightedDraw();
+  claimNotice.hidden=true;
   result.textContent='抽卡中… 想停就按停止！';
   rollingBadge.hidden=false;
   draw.disabled=true;
@@ -97,7 +99,8 @@ async function stopRoulette(){
 
   rollingBadge.hidden=true;
   rollingBadge.textContent='抽卡中…';
-  result.textContent=`恭喜抽到：${finalCard.name}！請跟老師領取卡牌並妥善保管遺失恕不補發`;
+  result.textContent=`🎉 恭喜抽到：${finalCard.name}！`;
+  claimNotice.hidden=false;
   draw.textContent='再抽一次';
   draw.disabled=false;
   isStopping=false;

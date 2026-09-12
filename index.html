@@ -8,21 +8,28 @@
 </head>
 <body>
   <main>
-    <h1>班級獎勵抽卡</h1>
-    <p class="hint">按下開始抽卡，想停的時候再按「停止！」</p>
+    <header>
+      <h1>班級獎勵抽卡</h1>
+      <p class="hint">按下開始抽卡，想停的時候再按「停止！」</p>
+    </header>
 
-    <div class="stage" aria-live="polite">
-      <div id="placeholder">🎁</div>
-      <img id="card" alt="抽到的卡牌">
-      <div id="rollingBadge" hidden>抽卡中…</div>
-    </div>
+    <div class="layout">
+      <div class="stage" aria-live="polite">
+        <div id="placeholder">🎁</div>
+        <img id="card" alt="抽到的卡牌">
+        <div id="rollingBadge" hidden>抽卡中…</div>
+      </div>
 
-    <div class="controls">
-      <h2 id="result">準備好了嗎？</h2>
-      <div class="buttons">
-        <button id="draw">開始抽卡</button>
-        <button id="stop" class="stop" disabled>停止！</button>
-        <button id="galleryBtn" class="secondary">查看全部卡牌</button>
+      <div class="controls">
+        <h2 id="result">準備好了嗎？</h2>
+        <p id="claimNotice" class="claim-notice" hidden>
+          請向老師領取實體卡牌並妥善保管，遺失恕不補發。
+        </p>
+        <div class="buttons">
+          <button id="draw">開始抽卡</button>
+          <button id="stop" class="stop" disabled>停止！</button>
+          <button id="galleryBtn" class="secondary">查看全部卡牌</button>
+        </div>
       </div>
     </div>
 
