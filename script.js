@@ -1,15 +1,15 @@
 // weight 為抽中權重；目前總和為 100，可直接把數字當百分比理解。
 const cards = [
-  {name:'DJ卡', image:'1.png', weight:14},
-  {name:'午休自由卡', image:'2.png', weight:9},
-  {name:'快速通關卡', image:'3.png', weight:15},
-  {name:'無敵卡', image:'4.png', weight:2},
-  {name:'籤王卡', image:'5.png', weight:4},
-  {name:'免掃地卡', image:'6.png', weight:10},
-  {name:'能量補充卡', image:'7.png', weight:20},
-  {name:'北風太陽卡', image:'8.png', weight:12},
-  {name:'平板卡', image:'9.png', weight:8},
-  {name:'任性卡', image:'10.png', weight:6}
+  {name:'DJ卡', image:'images/1.png', weight:14},
+  {name:'午休自由卡', image:'images/2.png', weight:9},
+  {name:'快速通關卡', image:'images/3.png', weight:15},
+  {name:'無敵卡', image:'images/4.png', weight:2},
+  {name:'籤王卡', image:'images/5.png', weight:4},
+  {name:'免掃地卡', image:'images/6.png', weight:10},
+  {name:'能量補充卡', image:'images/7.png', weight:20},
+  {name:'北風太陽卡', image:'images/8.png', weight:12},
+  {name:'平板卡', image:'images/9.png', weight:8},
+  {name:'任性卡', image:'images/10.png', weight:6}
 ];
 
 function weightedDraw(){
