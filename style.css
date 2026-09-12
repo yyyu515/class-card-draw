@@ -205,3 +205,22 @@ button:disabled{opacity:.45;cursor:not-allowed}
   .controls { transform: none; }
   #result { white-space: normal; }
 }
+
+
+/* ===== 抽卡中標籤置中 ===== */
+#rollingBadge {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  transform: translate(-50%, -50%);
+  background: rgba(47, 41, 35, 0.82);
+  color: #fff;
+  padding: 12px 22px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: clamp(18px, 2vw, 28px);
+  z-index: 5;
+  white-space: nowrap;
+  box-shadow: 0 6px 18px rgba(0,0,0,.16);
+}
