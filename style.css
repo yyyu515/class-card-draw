@@ -280,3 +280,42 @@ button:disabled{opacity:.45;cursor:not-allowed}
   .buttons{margin-top:16px}
   #resultLabel{white-space:normal}
 }
+
+
+/* ===== v12：右側結果區最終位置微調 ===== */
+@media (min-width: 601px) {
+  /* 恭喜抽到區比上一版往下一點 */
+  .controls {
+    transform: translateY(-20px) !important;
+  }
+
+  .result-box {
+    margin-bottom: 20px !important;
+  }
+
+  #resultLabel {
+    font-size: clamp(24px, 2.4vw, 36px);
+    font-weight: 800;
+    white-space: nowrap;
+  }
+
+  #resultCardName {
+    margin-top: 8px;
+    font-size: clamp(34px, 3.2vw, 50px);
+    font-weight: 900;
+    line-height: 1.1;
+  }
+
+  /* 領取提醒維持一行 */
+  .claim-notice {
+    white-space: nowrap !important;
+    font-size: clamp(15px, 1.25vw, 19px);
+    padding: 14px 18px;
+    margin-bottom: 0 !important;
+  }
+
+  /* 三顆按鈕再往下一點 */
+  .buttons {
+    margin-top: 70px !important;
+  }
+}
