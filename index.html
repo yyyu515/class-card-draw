@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>班級獎勵抽卡</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <h1>班級獎勵抽卡</h1>
+    <p class="hint">按下按鈕，看看今天抽到哪一張！</p>
+
+    <div class="stage" aria-live="polite">
+      <div id="placeholder">🎁</div>
+      <img id="card" alt="抽到的卡牌">
+      <div id="rollingBadge" hidden>抽卡中…</div>
+    </div>
+
+    <div class="controls">
+      <h2 id="result">準備好了嗎？</h2>
+      <div class="buttons">
+        <button id="draw">抽一張卡</button>
+        <button id="galleryBtn" class="secondary">查看全部卡牌</button>
+      </div>
+    </div>
+
+    <section id="gallery" hidden></section>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
