@@ -5,8 +5,8 @@ const cards = [
   {name:'快速通關卡', image:'images/3.png', weight:15},
   {name:'無敵卡', image:'images/4.png', weight:2},
   {name:'籤王卡', image:'images/5.png', weight:4},
-  {name:'免掃地卡', image:'images/6.png', weight:10},
-  {name:'能量補充卡', image:'images/7.png', weight:20},
+  {name:'免掃地卡', image:'images/6.png', weight:12},
+  {name:'能量補充卡', image:'images/7.png', weight:18},
   {name:'北風太陽卡', image:'images/8.png', weight:9},
   {name:'平板卡', image:'images/9.png', weight:8},
   {name:'任性卡', image:'images/10.png', weight:6}
